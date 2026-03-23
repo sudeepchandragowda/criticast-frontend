@@ -1,65 +1,91 @@
-import Image from "next/image";
+// Render this page on every request instead of pre-building it at deploy time.
+// This avoids build timeouts caused by the backend's cold-start delay.
+export const dynamic = "force-dynamic";
 
-export default function Home() {
+import Link from "next/link";
+import IdeaCard from "@/components/IdeaCard";
+import { Idea, Page } from "@/types";
+
+// This is an async server component.
+// Next.js runs this function on the server, fetches the data, and sends
+// fully-rendered HTML to the browser — no loading spinner on first visit.
+async function fetchTopIdeas(): Promise<Idea[]> {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/ideas/top?page=0&size=12`,
+      { next: { revalidate: 60 } } // refresh cached data every 60 seconds
+    );
+    if (!res.ok) return [];
+    const data: Page<Idea> = await res.json();
+    return data.content;
+  } catch {
+    return [];
+  }
+}
+
+export default async function HomePage() {
+  const ideas = await fetchTopIdeas();
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div>
+      {/* ── Hero ──────────────────────────────────────────────────────── */}
+      <section
+        className="border-b border-gray-100 py-20"
+        style={{
+          background:
+            "radial-gradient(ellipse 80% 60% at 50% 40%, rgba(91,196,190,0.12) 0%, transparent 70%)",
+        }}
+      >
+        <div className="mx-auto max-w-2xl px-6 text-center">
+          <h1 className="text-6xl font-bold leading-tight tracking-tight text-gray-900">
+            Creative ideas &amp; honest critique.
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="mt-4 text-xl text-gray-400">
+            A place to pitch, review, and discover what&apos;s worth making.
           </p>
+          <div className="mt-8 flex justify-center gap-3">
+            <Link
+              href="/register"
+              className="rounded-full bg-black px-6 py-2.5 text-sm font-medium text-white hover:bg-gray-800 transition-colors"
+            >
+              Get started
+            </Link>
+            <Link
+              href="/login"
+              className="rounded-full border border-gray-300 px-6 py-2.5 text-sm font-medium text-gray-600 hover:border-gray-500 transition-colors"
+            >
+              Sign in
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      </section>
+
+      {/* ── Idea feed ─────────────────────────────────────────────────── */}
+      <section className="mx-auto max-w-7xl px-6 py-12">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-lg font-semibold text-gray-900">
+            Trending on Criticast
+          </h2>
+          <Link
+            href="/browse"
+            className="text-sm text-gray-500 hover:text-black transition-colors"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            See all →
+          </Link>
         </div>
-      </main>
+
+        {ideas.length === 0 ? (
+          <p className="py-20 text-center text-gray-400">
+            No ideas published yet. Be the first!
+          </p>
+        ) : (
+          <div className="grid grid-cols-1 gap-x-12 md:grid-cols-2 lg:grid-cols-3">
+            {ideas.map((idea) => (
+              <IdeaCard key={idea.id} idea={idea} />
+            ))}
+          </div>
+        )}
+      </section>
     </div>
   );
 }
