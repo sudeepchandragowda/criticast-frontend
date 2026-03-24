@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { register } from "@/lib/api";
+import { register, getMe } from "@/lib/api";
 
 // The role options a user can pick on sign-up.
 // ADMIN is not available here — that's assigned server-side only.
@@ -33,6 +33,8 @@ export default function RegisterPage() {
       const data = await register(name, email, password, role);
       localStorage.setItem("token", data.token);
       localStorage.setItem("refreshToken", data.refreshToken);
+      const me = await getMe();
+      localStorage.setItem("userId", String(me.id));
       setDone(true); // show "check your email" message
     } catch (err: unknown) {
       const msg =

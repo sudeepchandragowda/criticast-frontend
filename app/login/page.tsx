@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { login } from "@/lib/api";
+import { login, getMe } from "@/lib/api";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -28,6 +28,9 @@ export default function LoginPage() {
       const data = await login(email, password);
       localStorage.setItem("token", data.token);
       localStorage.setItem("refreshToken", data.refreshToken);
+      // Fetch and store userId for creator checks on idea pages
+      const me = await getMe();
+      localStorage.setItem("userId", String(me.id));
       router.push("/"); // redirect to home on success
       router.refresh(); // tell Next.js to re-check auth state
     } catch (err: unknown) {

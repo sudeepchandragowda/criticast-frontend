@@ -10,12 +10,15 @@ interface Review {
   comment: string;
   reviewerId: number;
   createdAt: string;
+  updatedAt: string;
 }
 
 export default function ReviewsSection({ ideaId }: { ideaId: number }) {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [total, setTotal]     = useState(0);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [userId, setUserId]   = useState<number | null>(null);
+  const [editingId, setEditingId] = useState<number | null>(null);
 
   const fetchReviews = useCallback(async () => {
     try {
@@ -23,12 +26,15 @@ export default function ReviewsSection({ ideaId }: { ideaId: number }) {
       setReviews(data.content);
       setTotal(data.totalElements);
     } catch {
-      // silently fail — reviews just won't show
+      // silently fail
     }
   }, [ideaId]);
 
   useEffect(() => {
-    setLoggedIn(!!localStorage.getItem("token"));
+    const token = localStorage.getItem("token");
+    const uid = localStorage.getItem("userId");
+    setLoggedIn(!!token);
+    if (uid) setUserId(Number(uid));
     fetchReviews();
   }, [fetchReviews]);
 
@@ -57,18 +63,43 @@ export default function ReviewsSection({ ideaId }: { ideaId: number }) {
         <div className="flex flex-col divide-y divide-gray-100">
           {reviews.map((r) => (
             <div key={r.id} className="py-5">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-amber-400 text-sm">
-                  {"★".repeat(r.rating)}
-                  <span className="text-gray-200">{"★".repeat(5 - r.rating)}</span>
-                </span>
-                <span className="text-xs text-gray-400">
-                  {new Date(r.createdAt).toLocaleDateString("en-US", {
-                    month: "short", day: "numeric", year: "numeric",
-                  })}
-                </span>
-              </div>
-              <p className="text-sm leading-relaxed text-gray-700">{r.comment}</p>
+              {editingId === r.id ? (
+                <ReviewForm
+                  ideaId={ideaId}
+                  initialRating={r.rating}
+                  initialComment={r.comment}
+                  onSubmitted={() => { setEditingId(null); fetchReviews(); }}
+                  onCancel={() => setEditingId(null)}
+                />
+              ) : (
+                <>
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-amber-400 text-sm">
+                        {"★".repeat(r.rating)}
+                        <span className="text-gray-200">{"★".repeat(5 - r.rating)}</span>
+                      </span>
+                      <span className="text-xs text-gray-400">
+                        {new Date(r.createdAt).toLocaleDateString("en-US", {
+                          month: "short", day: "numeric", year: "numeric",
+                        })}
+                      </span>
+                      {r.updatedAt !== r.createdAt && (
+                        <span className="text-xs text-gray-400 italic">· edited</span>
+                      )}
+                    </div>
+                    {userId === r.reviewerId && (
+                      <button
+                        onClick={() => setEditingId(r.id)}
+                        className="text-xs text-gray-400 hover:text-gray-700 transition-colors underline underline-offset-2"
+                      >
+                        Edit
+                      </button>
+                    )}
+                  </div>
+                  <p className="text-sm leading-relaxed text-gray-700">{r.comment}</p>
+                </>
+              )}
             </div>
           ))}
         </div>

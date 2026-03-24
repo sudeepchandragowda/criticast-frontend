@@ -81,6 +81,16 @@ export async function createIdea(payload: {
   return data;
 }
 
+export async function updateIdea(id: number, payload: {
+  title: string;
+  description: string;
+  genre: string;
+  scriptUrl?: string;
+}): Promise<Idea> {
+  const { data } = await api.put(`/api/ideas/${id}`, payload);
+  return data;
+}
+
 export async function publishIdea(id: number): Promise<Idea> {
   const { data } = await api.patch(`/api/ideas/${id}/publish`);
   return data;

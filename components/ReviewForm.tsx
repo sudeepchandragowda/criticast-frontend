@@ -5,15 +5,20 @@ import api from "@/lib/api";
 
 interface Props {
   ideaId: number;
-  onSubmitted: () => void; // called after a successful review so the list can refresh
+  initialRating?: number;
+  initialComment?: string;
+  onSubmitted: () => void;
+  onCancel?: () => void;
 }
 
-export default function ReviewForm({ ideaId, onSubmitted }: Props) {
-  const [rating, setRating]   = useState(0);
-  const [hovered, setHovered] = useState(0); // which star the cursor is on
-  const [comment, setComment] = useState("");
+export default function ReviewForm({ ideaId, initialRating = 0, initialComment = "", onSubmitted, onCancel }: Props) {
+  const [rating, setRating]   = useState(initialRating);
+  const [hovered, setHovered] = useState(0);
+  const [comment, setComment] = useState(initialComment);
   const [loading, setLoading] = useState(false);
   const [error, setError]     = useState("");
+
+  const isEditing = initialRating > 0;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -23,8 +28,10 @@ export default function ReviewForm({ ideaId, onSubmitted }: Props) {
 
     try {
       await api.post(`/api/ideas/${ideaId}/reviews`, { rating, comment });
-      setRating(0);
-      setComment("");
+      if (!isEditing) {
+        setRating(0);
+        setComment("");
+      }
       onSubmitted();
     } catch (err: unknown) {
       const msg =
@@ -73,13 +80,24 @@ export default function ReviewForm({ ideaId, onSubmitted }: Props) {
         <p className="rounded-lg bg-red-50 px-4 py-2 text-sm text-red-600">{error}</p>
       )}
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="self-start rounded-full bg-black px-6 py-2 text-sm font-medium text-white hover:bg-gray-800 transition-colors disabled:opacity-50"
-      >
-        {loading ? "Submitting…" : "Submit review"}
-      </button>
+      <div className="flex gap-2">
+        <button
+          type="submit"
+          disabled={loading}
+          className="rounded-full bg-black px-6 py-2 text-sm font-medium text-white hover:bg-gray-800 transition-colors disabled:opacity-50"
+        >
+          {loading ? "Submitting…" : isEditing ? "Save changes" : "Submit review"}
+        </button>
+        {onCancel && (
+          <button
+            type="button"
+            onClick={onCancel}
+            className="rounded-full border border-gray-300 px-6 py-2 text-sm text-gray-600 hover:border-gray-500 transition-colors"
+          >
+            Cancel
+          </button>
+        )}
+      </div>
     </form>
   );
 }

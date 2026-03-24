@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import ReviewsSection from "./ReviewsSection";
+import IdeaActions from "./IdeaActions";
 
 const API = process.env.NEXT_PUBLIC_API_URL;
 
@@ -70,10 +71,20 @@ export default async function IdeaPage({
 
       <hr className="my-8 border-gray-100" />
 
+      {/* Edit button — only shown to the creator (client component handles the check) */}
+      <IdeaActions idea={idea} />
+
       {/* Description */}
-      <p className="text-lg leading-relaxed text-gray-700 whitespace-pre-wrap">
+      <p className="text-lg leading-relaxed text-gray-700 whitespace-pre-wrap mt-4">
         {idea.description}
       </p>
+
+      {/* Edited timestamp */}
+      {idea.updatedAt !== idea.createdAt && (
+        <p className="mt-3 text-xs text-gray-400">
+          Edited {new Date(idea.updatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+        </p>
+      )}
 
       {/* Script link */}
       {idea.scriptUrl && (

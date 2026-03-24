@@ -7,6 +7,7 @@ export interface Idea {
   creatorId: number;
   creatorName: string;
   createdAt: string;
+  updatedAt: string;
   totalReviews: number;
   avgRating: number;
   scriptUrl: string | null;

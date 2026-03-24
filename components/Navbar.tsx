@@ -14,6 +14,7 @@ export default function Navbar() {
   function handleSignOut() {
     localStorage.removeItem("token");
     localStorage.removeItem("refreshToken");
+    localStorage.removeItem("userId");
     setLoggedIn(false);
     window.location.href = "/";
   }
