@@ -47,6 +47,12 @@ export default function Navbar() {
               >
                 Dashboard
               </Link>
+              <Link
+                href="/settings"
+                className="text-sm text-gray-700 hover:text-black transition-colors"
+              >
+                Settings
+              </Link>
               <button
                 onClick={handleSignOut}
                 className="rounded-full border border-gray-300 px-4 py-1.5 text-sm text-gray-700 hover:border-gray-500 transition-colors"
