@@ -112,4 +112,15 @@ export async function browseIdeas(params: {
   return data;
 }
 
+// ── AI Writing Assistant ──────────────────────────────────────────────────────
+
+export async function assistWriting(payload: {
+  title: string;
+  genre: string;
+  content: string;
+}): Promise<{ content: string }> {
+  const { data } = await api.post("/api/ai/assist", payload);
+  return data;
+}
+
 export default api;

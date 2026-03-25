@@ -9,12 +9,16 @@ interface Props {
   content: string;
   onChange: (html: string) => void;
   placeholder?: string;
+  onAssist?: () => Promise<void>;
+  assisting?: boolean;
 }
 
 export default function RichTextEditor({
   content,
   onChange,
   placeholder = "Write your idea…",
+  onAssist,
+  assisting = false,
 }: Props) {
   const editor = useEditor({
     extensions: [
@@ -119,6 +123,30 @@ export default function RichTextEditor({
         >
           —
         </ToolbarButton>
+
+        {onAssist && (
+          <>
+            <span className="flex-1" />
+            <button
+              type="button"
+              onMouseDown={(e) => {
+                e.preventDefault();
+                onAssist();
+              }}
+              disabled={assisting}
+              className="flex items-center gap-1 rounded px-2.5 py-1 text-xs font-medium text-teal-700 bg-teal-50 hover:bg-teal-100 transition-colors disabled:opacity-50"
+            >
+              {assisting ? (
+                <>
+                  <span className="h-3 w-3 animate-spin rounded-full border border-teal-500 border-t-transparent" />
+                  Polishing…
+                </>
+              ) : (
+                <>✦ Polish with AI</>
+              )}
+            </button>
+          </>
+        )}
       </div>
 
       <EditorContent editor={editor} />

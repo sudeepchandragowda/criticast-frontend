@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { updateIdea } from "@/lib/api";
+import { updateIdea, assistWriting } from "@/lib/api";
 import { Idea } from "@/types";
 import RichTextEditor from "@/components/RichTextEditor";
 
@@ -23,6 +23,19 @@ export default function EditIdeaForm({ idea, onSaved, onCancel }: Props) {
   const [scriptUrl, setScriptUrl] = useState(idea.scriptUrl ?? "");
   const [saving, setSaving]       = useState(false);
   const [error, setError]         = useState("");
+  const [assisting, setAssisting] = useState(false);
+
+  async function handleAssist() {
+    setAssisting(true);
+    try {
+      const result = await assistWriting({ title, genre, content: description });
+      setDesc(result.content);
+    } catch {
+      setError("AI assistant failed. Make sure ANTHROPIC_API_KEY is configured.");
+    } finally {
+      setAssisting(false);
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -60,6 +73,8 @@ export default function EditIdeaForm({ idea, onSaved, onCancel }: Props) {
         <RichTextEditor
           content={description}
           onChange={setDesc}
+          onAssist={handleAssist}
+          assisting={assisting}
         />
       </div>
 

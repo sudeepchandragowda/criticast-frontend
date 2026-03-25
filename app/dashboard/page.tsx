@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { getMe, getMyIdeas, createIdea, publishIdea, deleteIdea } from "@/lib/api";
+import { getMe, getMyIdeas, createIdea, publishIdea, deleteIdea, assistWriting } from "@/lib/api";
 import { Idea, User } from "@/types";
 import RichTextEditor from "@/components/RichTextEditor";
 
@@ -26,6 +26,7 @@ export default function DashboardPage() {
   const [scriptUrl, setScriptUrl] = useState("");
   const [formError, setFormError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [assisting, setAssisting] = useState(false);
 
   async function loadData() {
     try {
@@ -48,6 +49,18 @@ export default function DashboardPage() {
     loadData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  async function handleAssist() {
+    setAssisting(true);
+    try {
+      const result = await assistWriting({ title, genre, content: description });
+      setDesc(result.content);
+    } catch {
+      setFormError("AI assistant failed. Make sure ANTHROPIC_API_KEY is configured.");
+    } finally {
+      setAssisting(false);
+    }
+  }
 
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
@@ -146,6 +159,8 @@ export default function DashboardPage() {
               content={description}
               onChange={setDesc}
               placeholder="Describe your idea in detail…"
+              onAssist={handleAssist}
+              assisting={assisting}
             />
           </div>
 
