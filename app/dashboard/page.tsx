@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getMe, getMyIdeas, createIdea, publishIdea, deleteIdea } from "@/lib/api";
 import { Idea, User } from "@/types";
+import RichTextEditor from "@/components/RichTextEditor";
 
 const GENRES = [
   "DRAMA", "THRILLER", "COMEDY", "ACTION", "ROMANCE",
@@ -141,14 +142,10 @@ export default function DashboardPage() {
 
           <div className="flex flex-col gap-1.5">
             <label className="text-sm font-medium text-gray-700">Description</label>
-            <textarea
-              required
-              value={description}
-              onChange={(e) => setDesc(e.target.value)}
+            <RichTextEditor
+              content={description}
+              onChange={setDesc}
               placeholder="Describe your idea in detail…"
-              rows={4}
-              maxLength={2000}
-              className="rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:border-gray-500 focus:outline-none resize-none"
             />
           </div>
 

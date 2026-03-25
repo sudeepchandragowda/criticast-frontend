@@ -75,9 +75,10 @@ export default async function IdeaPage({
       <IdeaActions idea={idea} />
 
       {/* Description */}
-      <p className="text-lg leading-relaxed text-gray-700 whitespace-pre-wrap mt-4">
-        {idea.description}
-      </p>
+      <div
+        className="idea-content text-lg leading-relaxed text-gray-700 mt-4"
+        dangerouslySetInnerHTML={{ __html: idea.description }}
+      />
 
       {/* Edited timestamp */}
       {idea.updatedAt !== idea.createdAt && (

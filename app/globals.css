@@ -128,3 +128,141 @@
     @apply font-sans;
   }
 }
+
+/* Tiptap editor content styles */
+.tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #9ca3af;
+  pointer-events: none;
+  height: 0;
+}
+
+.tiptap h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 1rem 0 0.5rem;
+  color: #111827;
+}
+
+.tiptap h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0.75rem 0 0.4rem;
+  color: #111827;
+}
+
+.tiptap p {
+  margin: 0.5rem 0;
+  line-height: 1.75;
+}
+
+.tiptap ul,
+.tiptap ol {
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.tiptap ul {
+  list-style-type: disc;
+}
+
+.tiptap ol {
+  list-style-type: decimal;
+}
+
+.tiptap li {
+  margin: 0.25rem 0;
+  line-height: 1.75;
+}
+
+.tiptap blockquote {
+  border-left: 3px solid #d1d5db;
+  padding-left: 1rem;
+  margin: 0.75rem 0;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.tiptap hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 1rem 0;
+}
+
+.tiptap strong {
+  font-weight: 700;
+}
+
+.tiptap em {
+  font-style: italic;
+}
+
+.tiptap s {
+  text-decoration: line-through;
+}
+
+/* Rendered idea content (read-only) */
+.idea-content h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 1.25rem 0 0.5rem;
+  color: #111827;
+}
+
+.idea-content h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 1rem 0 0.4rem;
+  color: #111827;
+}
+
+.idea-content p {
+  margin: 0.6rem 0;
+  line-height: 1.8;
+}
+
+.idea-content ul,
+.idea-content ol {
+  padding-left: 1.5rem;
+  margin: 0.6rem 0;
+}
+
+.idea-content ul {
+  list-style-type: disc;
+}
+
+.idea-content ol {
+  list-style-type: decimal;
+}
+
+.idea-content li {
+  margin: 0.3rem 0;
+  line-height: 1.75;
+}
+
+.idea-content blockquote {
+  border-left: 3px solid #d1d5db;
+  padding-left: 1rem;
+  margin: 0.75rem 0;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.idea-content hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 1.25rem 0;
+}
+
+.idea-content strong {
+  font-weight: 700;
+}
+
+.idea-content em {
+  font-style: italic;
+}
+
+.idea-content s {
+  text-decoration: line-through;
+}

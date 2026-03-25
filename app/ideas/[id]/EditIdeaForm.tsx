@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { updateIdea } from "@/lib/api";
 import { Idea } from "@/types";
+import RichTextEditor from "@/components/RichTextEditor";
 
 const GENRES = [
   "DRAMA", "THRILLER", "COMEDY", "ACTION", "ROMANCE",
@@ -56,13 +57,9 @@ export default function EditIdeaForm({ idea, onSaved, onCancel }: Props) {
 
       <div className="flex flex-col gap-1.5">
         <label className="text-sm font-medium text-gray-700">Description</label>
-        <textarea
-          required
-          value={description}
-          onChange={(e) => setDesc(e.target.value)}
-          rows={5}
-          maxLength={2000}
-          className="rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 focus:border-gray-500 focus:outline-none resize-none"
+        <RichTextEditor
+          content={description}
+          onChange={setDesc}
         />
       </div>
 
