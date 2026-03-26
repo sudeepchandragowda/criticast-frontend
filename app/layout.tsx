@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: "Criticast — Where great ideas meet critical eyes",
   description:
     "Discover, review, and pitch creative ideas. AI-powered insights for every story.",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
