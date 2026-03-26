@@ -76,6 +76,7 @@ export async function createIdea(payload: {
   description: string;
   genre: string;
   scriptUrl?: string;
+  videoUrl?: string;
 }): Promise<Idea> {
   const { data } = await api.post("/api/ideas", payload);
   return data;
@@ -86,6 +87,7 @@ export async function updateIdea(id: number, payload: {
   description: string;
   genre: string;
   scriptUrl?: string;
+  videoUrl?: string;
 }): Promise<Idea> {
   const { data } = await api.put(`/api/ideas/${id}`, payload);
   return data;

@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import ReviewsSection from "./ReviewsSection";
 import IdeaActions from "./IdeaActions";
+import VideoEmbed from "@/components/VideoEmbed";
 
 const API = process.env.NEXT_PUBLIC_API_URL;
 
@@ -86,6 +87,9 @@ export default async function IdeaPage({
           Edited {new Date(idea.updatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
         </p>
       )}
+
+      {/* Video embed */}
+      {idea.videoUrl && <VideoEmbed url={idea.videoUrl} />}
 
       {/* Script link */}
       {idea.scriptUrl && (

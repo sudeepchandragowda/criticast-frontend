@@ -21,6 +21,7 @@ export default function EditIdeaForm({ idea, onSaved, onCancel }: Props) {
   const [description, setDesc]    = useState(idea.description);
   const [genre, setGenre]         = useState(idea.genre);
   const [scriptUrl, setScriptUrl] = useState(idea.scriptUrl ?? "");
+  const [videoUrl, setVideoUrl]   = useState(idea.videoUrl ?? "");
   const [saving, setSaving]       = useState(false);
   const [error, setError]         = useState("");
   const [assisting, setAssisting] = useState(false);
@@ -42,7 +43,7 @@ export default function EditIdeaForm({ idea, onSaved, onCancel }: Props) {
     setError("");
     setSaving(true);
     try {
-      await updateIdea(idea.id, { title, description, genre, scriptUrl: scriptUrl || undefined });
+      await updateIdea(idea.id, { title, description, genre, scriptUrl: scriptUrl || undefined, videoUrl: videoUrl || undefined });
       onSaved();
     } catch (err: unknown) {
       const msg =
@@ -100,6 +101,19 @@ export default function EditIdeaForm({ idea, onSaved, onCancel }: Props) {
           value={scriptUrl}
           onChange={(e) => setScriptUrl(e.target.value)}
           placeholder="https://docs.google.com/…"
+          className="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:border-gray-500 focus:outline-none"
+        />
+      </div>
+
+      <div className="flex flex-col gap-1.5">
+        <label className="text-sm font-medium text-gray-700">
+          Video URL <span className="text-gray-400 font-normal">(optional — YouTube or Vimeo)</span>
+        </label>
+        <input
+          type="url"
+          value={videoUrl}
+          onChange={(e) => setVideoUrl(e.target.value)}
+          placeholder="https://youtube.com/watch?v=…"
           className="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:border-gray-500 focus:outline-none"
         />
       </div>

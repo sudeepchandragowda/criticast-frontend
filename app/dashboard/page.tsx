@@ -24,6 +24,7 @@ export default function DashboardPage() {
   const [description, setDesc]    = useState("");
   const [genre, setGenre]         = useState("DRAMA");
   const [scriptUrl, setScriptUrl] = useState("");
+  const [videoUrl, setVideoUrl]   = useState("");
   const [formError, setFormError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [assisting, setAssisting] = useState(false);
@@ -67,8 +68,8 @@ export default function DashboardPage() {
     setFormError("");
     setSubmitting(true);
     try {
-      await createIdea({ title, description, genre, scriptUrl: scriptUrl || undefined });
-      setTitle(""); setDesc(""); setGenre("DRAMA"); setScriptUrl("");
+      await createIdea({ title, description, genre, scriptUrl: scriptUrl || undefined, videoUrl: videoUrl || undefined });
+      setTitle(""); setDesc(""); setGenre("DRAMA"); setScriptUrl(""); setVideoUrl("");
       setShowForm(false);
       loadData();
     } catch (err: unknown) {
@@ -186,6 +187,19 @@ export default function DashboardPage() {
               value={scriptUrl}
               onChange={(e) => setScriptUrl(e.target.value)}
               placeholder="https://docs.google.com/…"
+              className="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:border-gray-500 focus:outline-none"
+            />
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-gray-700">
+              Video URL <span className="text-gray-400 font-normal">(optional — YouTube or Vimeo)</span>
+            </label>
+            <input
+              type="url"
+              value={videoUrl}
+              onChange={(e) => setVideoUrl(e.target.value)}
+              placeholder="https://youtube.com/watch?v=…"
               className="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:border-gray-500 focus:outline-none"
             />
           </div>

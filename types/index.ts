@@ -11,6 +11,7 @@ export interface Idea {
   totalReviews: number;
   avgRating: number;
   scriptUrl: string | null;
+  videoUrl: string | null;
 }
 
 export interface Page<T> {
