@@ -31,7 +31,7 @@ export default function EditIdeaForm({ idea, onSaved, onCancel }: Props) {
       const result = await assistWriting({ title, genre, content: description });
       setDesc(result.content);
     } catch {
-      setError("AI assistant failed. Make sure ANTHROPIC_API_KEY is configured.");
+      setError("AI assistant is unavailable right now. Please try again later.");
     } finally {
       setAssisting(false);
     }

@@ -56,7 +56,7 @@ export default function DashboardPage() {
       const result = await assistWriting({ title, genre, content: description });
       setDesc(result.content);
     } catch {
-      setFormError("AI assistant failed. Make sure ANTHROPIC_API_KEY is configured.");
+      setFormError("AI assistant is unavailable right now. Please try again later.");
     } finally {
       setAssisting(false);
     }
