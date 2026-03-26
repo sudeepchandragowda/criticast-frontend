@@ -21,6 +21,7 @@ export default function RichTextEditor({
   assisting = false,
 }: Props) {
   const editor = useEditor({
+    immediatelyRender: false,
     extensions: [
       StarterKit,
       Placeholder.configure({ placeholder }),
