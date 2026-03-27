@@ -37,7 +37,7 @@ export default function AboutPage() {
       <h2 className="text-xl font-semibold text-gray-900">How it works</h2>
 
       <p className="mt-4 text-gray-600 leading-relaxed">
-        Creators publish ideas — films, series, ad concepts, stories — then open
+        Creators publish ideas like films, series, ad concepts, and stories, then open
         them up for structured evaluation. Audiences review, rate, and react.
         Producers discover ideas that are already showing traction, backed by data
         instead of guesswork.
@@ -54,15 +54,15 @@ export default function AboutPage() {
 
       <p className="text-lg text-gray-600 leading-relaxed">
         We&apos;re not a social network. We&apos;re not a writing platform. We&apos;re the layer
-        that sits between &ldquo;I have an idea&rdquo; and &ldquo;someone&apos;s willing to produce it&rdquo;
-        — powered by real validation, not politics.
+        that sits between &ldquo;I have an idea&rdquo; and &ldquo;someone&apos;s willing to produce it,&rdquo;
+        powered by real validation, not politics.
       </p>
 
       <p className="mt-6 text-lg text-gray-600 leading-relaxed italic">
         Criticast turns ideas into evidence.
       </p>
 
-      <div className="mt-10 flex gap-4">
+      <div className="mt-16 flex gap-4">
         <Link
           href="/register"
           className="rounded-full bg-black px-6 py-2.5 text-sm font-medium text-white hover:bg-gray-800 transition-colors"
