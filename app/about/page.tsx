@@ -58,7 +58,7 @@ export default function AboutPage() {
         — powered by real validation, not politics.
       </p>
 
-      <p className="mt-6 text-xl font-semibold text-gray-900">
+      <p className="mt-6 text-lg text-gray-600 leading-relaxed italic">
         CritiCast turns ideas into evidence.
       </p>
 
