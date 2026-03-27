@@ -98,6 +98,11 @@ export async function publishIdea(id: number): Promise<Idea> {
   return data;
 }
 
+export async function shortlistIdea(id: number): Promise<Idea> {
+  const { data } = await api.patch(`/api/ideas/${id}/shortlist`);
+  return data;
+}
+
 export async function deleteIdea(id: number): Promise<void> {
   await api.delete(`/api/ideas/${id}`);
 }

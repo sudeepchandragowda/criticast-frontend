@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 
 export default function Navbar() {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  // Check if a token exists in localStorage when the component mounts
   useEffect(() => {
     setLoggedIn(!!localStorage.getItem("token"));
   }, []);
@@ -27,32 +27,18 @@ export default function Navbar() {
           Criticast
         </Link>
 
-        {/* Nav links */}
+        {/* Desktop nav links */}
         <nav className="hidden gap-6 text-sm text-gray-600 md:flex">
-          <Link href="/" className="hover:text-black transition-colors">
-            Home
-          </Link>
-          <Link href="/browse" className="hover:text-black transition-colors">
-            Browse
-          </Link>
+          <Link href="/" className="hover:text-black transition-colors">Home</Link>
+          <Link href="/browse" className="hover:text-black transition-colors">Browse</Link>
         </nav>
 
-        {/* Auth actions */}
-        <div className="flex items-center gap-3">
+        {/* Desktop auth actions */}
+        <div className="hidden md:flex items-center gap-3">
           {loggedIn ? (
             <>
-              <Link
-                href="/dashboard"
-                className="text-sm text-gray-700 hover:text-black transition-colors"
-              >
-                Dashboard
-              </Link>
-              <Link
-                href="/settings"
-                className="text-sm text-gray-700 hover:text-black transition-colors"
-              >
-                Settings
-              </Link>
+              <Link href="/dashboard" className="text-sm text-gray-700 hover:text-black transition-colors">Dashboard</Link>
+              <Link href="/settings" className="text-sm text-gray-700 hover:text-black transition-colors">Settings</Link>
               <button
                 onClick={handleSignOut}
                 className="rounded-full border border-gray-300 px-4 py-1.5 text-sm text-gray-700 hover:border-gray-500 transition-colors"
@@ -62,22 +48,53 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <Link
-                href="/login"
-                className="text-sm text-gray-700 hover:text-black transition-colors"
-              >
-                Sign in
-              </Link>
-              <Link
-                href="/register"
-                className="rounded-full bg-black px-4 py-1.5 text-sm text-white hover:bg-gray-800 transition-colors"
-              >
+              <Link href="/login" className="text-sm text-gray-700 hover:text-black transition-colors">Sign in</Link>
+              <Link href="/register" className="rounded-full bg-black px-4 py-1.5 text-sm text-white hover:bg-gray-800 transition-colors">
                 Get started
               </Link>
             </>
           )}
         </div>
+
+        {/* Mobile hamburger */}
+        <button
+          className="md:hidden p-2 text-gray-600 hover:text-black transition-colors"
+          onClick={() => setMenuOpen((v) => !v)}
+          aria-label="Toggle menu"
+        >
+          {menuOpen ? (
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          ) : (
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          )}
+        </button>
       </div>
+
+      {/* Mobile menu */}
+      {menuOpen && (
+        <div className="md:hidden border-t border-gray-100 bg-stone-50 px-6 py-4 flex flex-col gap-4 text-sm">
+          <Link href="/" onClick={() => setMenuOpen(false)} className="text-gray-700 hover:text-black transition-colors">Home</Link>
+          <Link href="/browse" onClick={() => setMenuOpen(false)} className="text-gray-700 hover:text-black transition-colors">Browse</Link>
+          {loggedIn ? (
+            <>
+              <Link href="/dashboard" onClick={() => setMenuOpen(false)} className="text-gray-700 hover:text-black transition-colors">Dashboard</Link>
+              <Link href="/settings" onClick={() => setMenuOpen(false)} className="text-gray-700 hover:text-black transition-colors">Settings</Link>
+              <button onClick={handleSignOut} className="text-left text-gray-700 hover:text-black transition-colors">Sign out</button>
+            </>
+          ) : (
+            <>
+              <Link href="/login" onClick={() => setMenuOpen(false)} className="text-gray-700 hover:text-black transition-colors">Sign in</Link>
+              <Link href="/register" onClick={() => setMenuOpen(false)} className="rounded-full bg-black px-4 py-2 text-center text-white hover:bg-gray-800 transition-colors">
+                Get started
+              </Link>
+            </>
+          )}
+        </div>
+      )}
     </header>
   );
 }
