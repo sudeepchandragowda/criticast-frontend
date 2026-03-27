@@ -12,7 +12,7 @@ export default function AboutPage() {
       </h1>
 
       <p className="mt-6 text-lg text-gray-600 leading-relaxed">
-        CritiCast is a decision intelligence platform for creative ideas. We give
+        Criticast is a decision intelligence platform for creative ideas. We give
         creators a structured way to put their concepts in front of real audiences
         and turn subjective reactions into measurable signals.
       </p>
@@ -29,7 +29,7 @@ export default function AboutPage() {
       </p>
 
       <p className="mt-4 text-gray-600 leading-relaxed font-medium text-gray-800">
-        CritiCast flips that model.
+        Criticast flips that model.
       </p>
 
       <hr className="my-10 border-gray-100" />
@@ -44,7 +44,7 @@ export default function AboutPage() {
       </p>
 
       <p className="mt-4 text-gray-600 leading-relaxed">
-        Every idea on CritiCast builds a living profile: audience ratings, review
+        Every idea on Criticast builds a living profile: audience ratings, review
         volume, engagement patterns, and AI-powered insights including sentiment
         analysis, theme extraction, and audience appeal. The result isn&apos;t just
         feedback. It&apos;s a signal that tells you whether something is worth betting on.
@@ -59,7 +59,7 @@ export default function AboutPage() {
       </p>
 
       <p className="mt-6 text-lg text-gray-600 leading-relaxed italic">
-        CritiCast turns ideas into evidence.
+        Criticast turns ideas into evidence.
       </p>
 
       <div className="mt-10 flex gap-4">
