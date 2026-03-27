@@ -2,14 +2,16 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     setLoggedIn(!!localStorage.getItem("token"));
-  }, []);
+  }, [pathname]);
 
   function handleSignOut() {
     localStorage.removeItem("token");
