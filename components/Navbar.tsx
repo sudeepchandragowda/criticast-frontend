@@ -33,6 +33,7 @@ export default function Navbar() {
         <nav className="hidden gap-6 text-sm text-gray-600 md:flex">
           <Link href="/" className="hover:text-black transition-colors">Home</Link>
           <Link href="/browse" className="hover:text-black transition-colors">Browse</Link>
+          <Link href="/about" className="hover:text-black transition-colors">About</Link>
         </nav>
 
         {/* Desktop auth actions */}
@@ -81,6 +82,7 @@ export default function Navbar() {
         <div className="md:hidden border-t border-gray-100 bg-stone-50 px-6 py-4 flex flex-col gap-4 text-sm">
           <Link href="/" onClick={() => setMenuOpen(false)} className="text-gray-700 hover:text-black transition-colors">Home</Link>
           <Link href="/browse" onClick={() => setMenuOpen(false)} className="text-gray-700 hover:text-black transition-colors">Browse</Link>
+          <Link href="/about" onClick={() => setMenuOpen(false)} className="text-gray-700 hover:text-black transition-colors">About</Link>
           {loggedIn ? (
             <>
               <Link href="/dashboard" onClick={() => setMenuOpen(false)} className="text-gray-700 hover:text-black transition-colors">Dashboard</Link>
