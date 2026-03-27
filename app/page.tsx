@@ -3,28 +3,26 @@
 export const dynamic = "force-dynamic";
 
 import Link from "next/link";
-import IdeaCard from "@/components/IdeaCard";
+import LoadMoreIdeas from "@/components/LoadMoreIdeas";
 import { Idea, Page } from "@/types";
 
-// This is an async server component.
-// Next.js runs this function on the server, fetches the data, and sends
-// fully-rendered HTML to the browser — no loading spinner on first visit.
-async function fetchTopIdeas(): Promise<Idea[]> {
+async function fetchTopIdeas(): Promise<Page<Idea>> {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/ideas/top?page=0&size=12`,
-      { next: { revalidate: 60 } } // refresh cached data every 60 seconds
+      { next: { revalidate: 60 } }
     );
-    if (!res.ok) return [];
-    const data: Page<Idea> = await res.json();
-    return data.content;
+    if (!res.ok) return { content: [], totalElements: 0, totalPages: 0, number: 0, size: 12 };
+    return res.json();
   } catch {
-    return [];
+    return { content: [], totalElements: 0, totalPages: 0, number: 0, size: 12 };
   }
 }
 
 export default async function HomePage() {
-  const ideas = await fetchTopIdeas();
+  const data = await fetchTopIdeas();
+  const ideas = data.content;
+  const totalElements = data.totalElements;
 
   return (
     <div>
@@ -79,11 +77,7 @@ export default async function HomePage() {
             No ideas published yet. Be the first!
           </p>
         ) : (
-          <div className="grid grid-cols-1 gap-x-12 md:grid-cols-2 lg:grid-cols-3">
-            {ideas.map((idea) => (
-              <IdeaCard key={idea.id} idea={idea} />
-            ))}
-          </div>
+          <LoadMoreIdeas initialIdeas={ideas} initialTotal={totalElements} />
         )}
       </section>
     </div>
