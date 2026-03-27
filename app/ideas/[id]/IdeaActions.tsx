@@ -4,34 +4,46 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import EditIdeaForm from "./EditIdeaForm";
 import { Idea, User } from "@/types";
-import { getMe, shortlistIdea } from "@/lib/api";
+import { getMe, addShortlist, removeShortlist, checkShortlist } from "@/lib/api";
 
 export default function IdeaActions({ idea }: { idea: Idea }) {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [editing, setEditing] = useState(false);
-  const [shortlisting, setShortlisting] = useState(false);
+  const [shortlisted, setShortlisted] = useState(false);
+  const [toggling, setToggling] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) return;
-    getMe().then(setUser).catch(() => {});
-  }, []);
+    getMe()
+      .then((me) => {
+        setUser(me);
+        if (me.role === "PRODUCER" || me.role === "ADMIN") {
+          return checkShortlist(idea.id).then(setShortlisted);
+        }
+      })
+      .catch(() => {});
+  }, [idea.id]);
 
   const isCreator = user !== null && user.id === idea.creatorId;
   const isProducerOrAdmin = user !== null && (user.role === "PRODUCER" || user.role === "ADMIN");
   const canShortlist = isProducerOrAdmin && idea.status === "PUBLISHED";
-  const isShortlisted = idea.status === "SHORTLISTED";
 
-  async function handleShortlist() {
-    setShortlisting(true);
+  async function handleToggleShortlist() {
+    setToggling(true);
     try {
-      await shortlistIdea(idea.id);
-      router.refresh();
+      if (shortlisted) {
+        await removeShortlist(idea.id);
+        setShortlisted(false);
+      } else {
+        await addShortlist(idea.id);
+        setShortlisted(true);
+      }
     } catch {
-      alert("Could not shortlist this idea.");
+      alert("Could not update shortlist.");
     } finally {
-      setShortlisting(false);
+      setToggling(false);
     }
   }
 
@@ -45,7 +57,7 @@ export default function IdeaActions({ idea }: { idea: Idea }) {
     );
   }
 
-  if (!isCreator && !canShortlist && !isShortlisted) return null;
+  if (!isCreator && !canShortlist) return null;
 
   return (
     <div className="flex items-center gap-3 mb-4">
@@ -59,17 +71,16 @@ export default function IdeaActions({ idea }: { idea: Idea }) {
       )}
       {canShortlist && (
         <button
-          onClick={handleShortlist}
-          disabled={shortlisting}
-          className="rounded-full bg-teal-600 px-4 py-1.5 text-sm font-medium text-white hover:bg-teal-700 transition-colors disabled:opacity-50"
+          onClick={handleToggleShortlist}
+          disabled={toggling}
+          className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors disabled:opacity-50 ${
+            shortlisted
+              ? "bg-teal-50 text-teal-700 hover:bg-teal-100"
+              : "bg-teal-600 text-white hover:bg-teal-700"
+          }`}
         >
-          {shortlisting ? "Shortlisting…" : "✦ Shortlist"}
+          {toggling ? "Updating…" : shortlisted ? "✦ Shortlisted" : "✦ Shortlist"}
         </button>
-      )}
-      {isShortlisted && isProducerOrAdmin && (
-        <span className="rounded-full bg-teal-50 px-4 py-1.5 text-sm font-medium text-teal-700">
-          ✦ Shortlisted by you
-        </span>
       )}
     </div>
   );

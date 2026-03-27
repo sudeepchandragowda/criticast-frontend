@@ -98,8 +98,21 @@ export async function publishIdea(id: number): Promise<Idea> {
   return data;
 }
 
-export async function shortlistIdea(id: number): Promise<Idea> {
-  const { data } = await api.patch(`/api/ideas/${id}/shortlist`);
+export async function addShortlist(ideaId: number): Promise<void> {
+  await api.post(`/api/shortlists/${ideaId}`);
+}
+
+export async function removeShortlist(ideaId: number): Promise<void> {
+  await api.delete(`/api/shortlists/${ideaId}`);
+}
+
+export async function checkShortlist(ideaId: number): Promise<boolean> {
+  const { data } = await api.get(`/api/shortlists/${ideaId}/status`);
+  return data.shortlisted;
+}
+
+export async function getMyShortlists(): Promise<Idea[]> {
+  const { data } = await api.get("/api/shortlists");
   return data;
 }
 

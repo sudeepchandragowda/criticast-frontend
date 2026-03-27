@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { getMe, getMyIdeas, createIdea, publishIdea, deleteIdea, assistWriting } from "@/lib/api";
+import { getMe, getMyIdeas, createIdea, publishIdea, deleteIdea, assistWriting, getMyShortlists } from "@/lib/api";
 import { Idea, User } from "@/types";
 import RichTextEditor from "@/components/RichTextEditor";
 
@@ -14,9 +14,10 @@ const GENRES = [
 
 export default function DashboardPage() {
   const router = useRouter();
-  const [user, setUser]     = useState<User | null>(null);
-  const [ideas, setIdeas]   = useState<Idea[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser]           = useState<User | null>(null);
+  const [ideas, setIdeas]         = useState<Idea[]>([]);
+  const [shortlisted, setShortlisted] = useState<Idea[]>([]);
+  const [loading, setLoading]     = useState(true);
   const [showForm, setShowForm] = useState(false);
 
   // Form state
@@ -33,11 +34,15 @@ export default function DashboardPage() {
 
   async function loadData() {
     try {
-      const [me, page] = await Promise.all([getMe(), getMyIdeas()]);
+      const me = await getMe();
       setUser(me);
+      const page = await getMyIdeas();
       setIdeas(page.content);
+      if (me.role === "PRODUCER" || me.role === "ADMIN") {
+        const sl = await getMyShortlists();
+        setShortlisted(sl);
+      }
     } catch {
-      // Not logged in — redirect
       router.replace("/login");
     } finally {
       setLoading(false);
@@ -111,8 +116,9 @@ export default function DashboardPage() {
     );
   }
 
-  const drafts    = ideas.filter((i) => i.status === "DRAFT");
-  const published = ideas.filter((i) => i.status !== "DRAFT");
+  const drafts      = ideas.filter((i) => i.status === "DRAFT");
+  const published   = ideas.filter((i) => i.status === "PUBLISHED");
+  const isProducer  = user?.role === "PRODUCER" || user?.role === "ADMIN";
 
   return (
     <div className="mx-auto max-w-2xl px-6 py-12">
@@ -221,7 +227,7 @@ export default function DashboardPage() {
       )}
 
       {/* Ideas list */}
-      {ideas.length === 0 ? (
+      {ideas.length === 0 && !isProducer ? (
         <p className="py-16 text-center text-gray-400 text-sm">
           You haven&apos;t posted any ideas yet.
         </p>
@@ -246,7 +252,7 @@ export default function DashboardPage() {
           )}
 
           {published.length > 0 && (
-            <section>
+            <section className="mb-10">
               <h2 className="mb-4 text-xs font-semibold uppercase tracking-widest text-gray-400">
                 Published
               </h2>
@@ -261,6 +267,25 @@ export default function DashboardPage() {
               </div>
             </section>
           )}
+
+          {isProducer && (
+            <section className="mb-10">
+              <h2 className="mb-4 text-xs font-semibold uppercase tracking-widest text-gray-400">
+                Shortlisted
+              </h2>
+              {shortlisted.length === 0 ? (
+                <p className="py-6 text-sm text-gray-400">
+                  No ideas shortlisted yet. Browse and shortlist ideas you like.
+                </p>
+              ) : (
+                <div className="flex flex-col divide-y divide-gray-100">
+                  {shortlisted.map((idea) => (
+                    <IdeaRow key={idea.id} idea={idea} onDelete={() => {}} hideDelete />
+                  ))}
+                </div>
+              )}
+            </section>
+          )}
         </>
       )}
     </div>
@@ -271,10 +296,12 @@ function IdeaRow({
   idea,
   onPublish,
   onDelete,
+  hideDelete,
 }: {
   idea: Idea;
   onPublish?: () => void;
   onDelete: () => void;
+  hideDelete?: boolean;
 }) {
   return (
     <div className="flex items-start justify-between gap-4 py-4">
@@ -299,12 +326,14 @@ function IdeaRow({
             Publish
           </button>
         )}
-        <button
-          onClick={onDelete}
-          className="rounded-full border border-red-100 px-3 py-1 text-xs text-red-500 hover:border-red-300 transition-colors"
-        >
-          Delete
-        </button>
+        {!hideDelete && (
+          <button
+            onClick={onDelete}
+            className="rounded-full border border-red-100 px-3 py-1 text-xs text-red-500 hover:border-red-300 transition-colors"
+          >
+            Delete
+          </button>
+        )}
       </div>
     </div>
   );
