@@ -15,6 +15,8 @@ const ROLES = [
 export default function SettingsPage() {
   const router = useRouter();
   const [user, setUser]       = useState<User | null>(null);
+
+  useEffect(() => { document.title = "Settings · Criticast"; }, []);
   const [name, setName]       = useState("");
   const [role, setRole]       = useState("");
   const [saving, setSaving]   = useState(false);

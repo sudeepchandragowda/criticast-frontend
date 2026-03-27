@@ -1,5 +1,8 @@
 import { Suspense } from "react";
 import BrowseContent from "./BrowseContent";
+import { Metadata } from "next";
+
+export const metadata: Metadata = { title: "Browse Ideas · Criticast" };
 
 export default function BrowsePage() {
   return (

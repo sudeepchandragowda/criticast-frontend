@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
 import ReviewsSection from "./ReviewsSection";
 import IdeaActions from "./IdeaActions";
 import VideoEmbed from "@/components/VideoEmbed";
@@ -24,6 +25,17 @@ async function getInsights(id: string) {
   const res = await fetch(`${API}/api/ideas/${id}/insights`, { cache: "no-store" });
   if (!res.ok) return null;
   return res.json();
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const idea = await getIdea(id);
+  if (!idea) return { title: "Idea · Criticast" };
+  return { title: `${idea.title} · Criticast` };
 }
 
 export default async function IdeaPage({

@@ -29,6 +29,8 @@ export default function DashboardPage() {
   const [submitting, setSubmitting] = useState(false);
   const [assisting, setAssisting] = useState(false);
 
+  useEffect(() => { document.title = "Dashboard · Criticast"; }, []);
+
   async function loadData() {
     try {
       const [me, page] = await Promise.all([getMe(), getMyIdeas()]);

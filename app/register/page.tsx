@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { register, getMe } from "@/lib/api";
@@ -22,7 +22,9 @@ export default function RegisterPage() {
   const [role, setRole]       = useState("VIEWER");
   const [error, setError]     = useState("");
   const [loading, setLoading] = useState(false);
-  const [done, setDone]       = useState(false); // show success state
+  const [done, setDone]       = useState(false);
+
+  useEffect(() => { document.title = "Join Criticast"; }, []); // show success state
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

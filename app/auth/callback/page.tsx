@@ -1,5 +1,8 @@
 import { Suspense } from "react";
 import CallbackContent from "./CallbackContent";
+import { Metadata } from "next";
+
+export const metadata: Metadata = { title: "Signing in · Criticast" };
 
 export default function CallbackPage() {
   return (

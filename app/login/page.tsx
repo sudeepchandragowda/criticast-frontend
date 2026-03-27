@@ -4,7 +4,7 @@
 // We need it here because we're handling form state and making API calls
 // in response to user actions — things that only happen in the browser.
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { login, getMe } from "@/lib/api";
@@ -18,6 +18,8 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError]       = useState("");
   const [loading, setLoading]   = useState(false);
+
+  useEffect(() => { document.title = "Sign In · Criticast"; }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault(); // stop the browser from reloading the page

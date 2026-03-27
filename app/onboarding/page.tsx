@@ -16,6 +16,8 @@ export default function OnboardingPage() {
   const [saving, setSaving]   = useState(false);
   const [error, setError]     = useState("");
 
+  useEffect(() => { document.title = "Get Started · Criticast"; }, []);
+
   useEffect(() => {
     if (!localStorage.getItem("token")) router.replace("/login");
   }, [router]);

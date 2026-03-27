@@ -6,9 +6,9 @@ import Navbar from "@/components/Navbar";
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
 
 export const metadata: Metadata = {
-  title: "Criticast — Where great ideas meet critical eyes",
+  title: "Criticast: Pitch. Review. Discover.",
   description:
-    "Discover, review, and pitch creative ideas. AI-powered insights for every story.",
+    "A place to pitch creative ideas, get honest reviews, and discover what's worth making.",
   icons: {
     icon: "/favicon.svg",
   },
