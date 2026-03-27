@@ -8,55 +8,58 @@ export default function AboutPage() {
     <div className="mx-auto max-w-2xl px-6 py-20">
 
       <h1 className="text-4xl font-bold text-gray-900 leading-tight">
-        Everyone has an idea worth hearing.
+        Great ideas shouldn&apos;t need connections. They need proof.
       </h1>
 
       <p className="mt-6 text-lg text-gray-600 leading-relaxed">
-        Criticast is a place for creative people to pitch their ideas — short films,
-        stories, ad concepts, AI videos, web series — and get honest feedback from
-        people who genuinely care about good work.
+        CritiCast is a decision intelligence platform for creative ideas. We give
+        creators a structured way to put their concepts in front of real audiences
+        and turn subjective reactions into measurable signals.
       </p>
 
-      <p className="mt-5 text-lg text-gray-600 leading-relaxed">
-        Most ideas never leave someone's notes app. Not because they're bad, but
-        because there's no place to put them out into the world and ask: <em>does
-        this resonate?</em> Criticast is that place.
+      <hr className="my-10 border-gray-100" />
+
+      <h2 className="text-xl font-semibold text-gray-900">The problem</h2>
+
+      <p className="mt-4 text-gray-600 leading-relaxed">
+        In entertainment, the best idea doesn&apos;t always win. The best-connected one
+        does. Ideas get pitched behind closed doors, evaluated on gut feeling, and
+        greenlit based on who&apos;s in the room. Meanwhile, thousands of genuinely
+        compelling concepts never get a fair shot.
+      </p>
+
+      <p className="mt-4 text-gray-600 leading-relaxed font-medium text-gray-800">
+        CritiCast flips that model.
       </p>
 
       <hr className="my-10 border-gray-100" />
 
       <h2 className="text-xl font-semibold text-gray-900">How it works</h2>
 
-      <div className="mt-6 flex flex-col gap-6">
-        <div>
-          <p className="text-sm font-semibold uppercase tracking-widest text-gray-400">Creators</p>
-          <p className="mt-1 text-gray-600 leading-relaxed">
-            Write up your idea, add context, attach a script or video if you have one.
-            Publish it and let the world weigh in.
-          </p>
-        </div>
-        <div>
-          <p className="text-sm font-semibold uppercase tracking-widest text-gray-400">Reviewers</p>
-          <p className="mt-1 text-gray-600 leading-relaxed">
-            Browse ideas across genres, rate them, and leave a review. Your feedback
-            helps creators sharpen their work and helps great ideas rise to the top.
-          </p>
-        </div>
-        <div>
-          <p className="text-sm font-semibold uppercase tracking-widest text-gray-400">Producers</p>
-          <p className="mt-1 text-gray-600 leading-relaxed">
-            Discover ideas that are ready to be made. Shortlist the ones that excite
-            you and connect with the creators behind them.
-          </p>
-        </div>
-      </div>
+      <p className="mt-4 text-gray-600 leading-relaxed">
+        Creators publish ideas — films, series, ad concepts, stories — then open
+        them up for structured evaluation. Audiences review, rate, and react.
+        Producers discover ideas that are already showing traction, backed by data
+        instead of guesswork.
+      </p>
+
+      <p className="mt-4 text-gray-600 leading-relaxed">
+        Every idea on CritiCast builds a living profile: audience ratings, review
+        volume, engagement patterns, and AI-powered insights including sentiment
+        analysis, theme extraction, and audience appeal. The result isn&apos;t just
+        feedback. It&apos;s a signal that tells you whether something is worth betting on.
+      </p>
 
       <hr className="my-10 border-gray-100" />
 
       <p className="text-lg text-gray-600 leading-relaxed">
-        We also use AI to help — to polish your pitch, surface insights from reviews,
-        and recommend ideas you're likely to love. But the heart of Criticast is
-        human: real ideas, real opinions, real potential.
+        We&apos;re not a social network. We&apos;re not a writing platform. We&apos;re the layer
+        that sits between &ldquo;I have an idea&rdquo; and &ldquo;someone&apos;s willing to produce it&rdquo;
+        — powered by real validation, not politics.
+      </p>
+
+      <p className="mt-6 text-xl font-semibold text-gray-900">
+        CritiCast turns ideas into evidence.
       </p>
 
       <div className="mt-10 flex gap-4">
